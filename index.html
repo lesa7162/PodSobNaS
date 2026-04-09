@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>PC Master Guide | 9+ сборок 2026 + гайды по сборке и настройке ОС</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 20% 30%, #0a0c15, #03050b);
+            color: #eef2ff;
+            line-height: 1.5;
+        }
+
+        /* Фоновый шум */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Стеклянная навигация */
+        .nav-bar {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 14px 24px;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px 28px;
+            align-items: center;
+        }
+        .nav-container a {
+            color: #cbd5e6;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-container a:hover {
+            color: white;
+            border-bottom-color: #3b82f6;
+        }
+        .nav-container .brand {
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #80b3ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-right: auto;
+            font-size: 1.2rem;
+            letter-spacing: -0.3px;
+        }
+        @media (max-width: 700px) {
+            .nav-container .brand { margin-right: 0; width: 100%; text-align: center; margin-bottom: 8px; }
+            .nav-container { justify-content: center; }
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero с эффектом свечения */
+        .hero {
+            position: relative;
+            padding: 56px 0 64px;
+            margin-bottom: 48px;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #93c5fd, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: #9ca9c9;
+            max-width: 700px;
+        }
+        .hero-glow {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(59,130,246,0) 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Карточки секций */
+        .section-card {
+            background: rgba(18, 25, 45, 0.6);
+            backdrop-filter: blur(4px);
+            border-radius: 32px;
+            padding: 28px 32px;
+            margin-bottom: 48px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: 0.2s;
+            scroll-margin-top: 90px;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(135deg, #f0f4ff, #a5c9ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            border-left: 4px solid #3b82f6;
+            padding-left: 20px;
+        }
+
+        /* Сетка сборок */
+        .builds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 28px;
+            margin: 24px 0 16px;
+        }
+        .build-card {
+            background: rgba(10, 15, 30, 0.7);
+            border-radius: 28px;
+            padding: 22px;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            transition: all 0.25s ease;
+            backdrop-filter: blur(4px);
+        }
+        .build-card:hover {
+            transform: translateY(-6px);
+            border-color: #3b82f6;
+            box-shadow: 0 20px 30px -15px rgba(0, 0, 0, 0.5);
+        }
+        .build-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .price-tag {
+            display: inline-block;
+            background: linear-gradient(95deg, #2563eb, #1e40af);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .spec-list {
+            list-style: none;
+            margin: 16px 0;
+        }
+        .spec-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #cbd5f0;
+        }
+        .badge-purpose {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.2);
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #90caf9;
+            margin-top: 8px;
+        }
+        .highlight {
+            background: rgba(37, 99, 235, 0.12);
+            border-left: 4px solid #3b82f6;
+            padding: 18px 24px;
+            border-radius: 24px;
+            margin: 24px 0 0;
+            backdrop-filter: blur(4px);
+        }
+        .step-list {
+            list-style: none;
+        }
+        .step-list li {
+            margin-bottom: 12px;
+            padding-left: 28px;
+            position: relative;
+            font-size: 0.9rem;
+            color: #cfddf5;
+        }
+        .step-list li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .step-number {
+            font-weight: 800;
+            color: #60a5fa;
+            margin-right: 8px;
+        }
+        .btn-ghost {
+            display: inline-block;
+            background: linear-gradient(95deg, #2563eb, #1e40af);
+            color: white;
+            font-weight: 600;
+            padding: 10px 28px;
+            border-radius: 40px;
+            text-decoration: none;
+            margin-top: 16px;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .btn-ghost:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(95deg, #3b82f6, #2563eb);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        }
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 24px 0;
+        }
+        .guide-step-card {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 24px;
+            padding: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            backdrop-filter: blur(4px);
+        }
+        .guide-step-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: #bfd9ff;
+        }
+        .warning-box {
+            background: rgba(245, 158, 11, 0.12);
+            border-left: 4px solid #f59e0b;
+            padding: 16px 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            color: #fde68a;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+            margin-top: 20px;
+            color: #6b7aa3;
+            font-size: 0.8rem;
+        }
+        .year-badge {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 12px;
+            display: inline-block;
+        }
+        @media (max-width: 700px) {
+            .section-card { padding: 20px; }
+            .hero h1 { font-size: 2rem; }
+        }
+        
+        /* Баннер конфигуратора в новом стиле */
+        .configurator-banner {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(59, 130, 246, 0.05));
+            border-radius: 28px;
+            padding: 24px 28px;
+            margin: 16px 0 8px;
+            text-align: center;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            backdrop-filter: blur(8px);
+        }
+        .configurator-banner p {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: #e2e8f0;
+        }
+        .configurator-banner a {
+            display: inline-block;
+            background: linear-gradient(95deg, #3b82f6, #1d4ed8);
+            color: white;
+            font-weight: 700;
+            padding: 12px 32px;
+            border-radius: 60px;
+            text-decoration: none;
+            transition: 0.2s;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(59,130,246,0.4);
+        }
+        .configurator-banner a:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(95deg, #2563eb, #1e40af);
+            box-shadow: 0 8px 25px rgba(59,130,246,0.5);
+        }
+        .configurator-banner .small-note {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="bg-noise"></div>
+
+<div class="nav-bar">
+    <div class="nav-container">
+        <div class="brand">⚡ PC BUILD MASTER <span style="font-size:0.65rem; background:#2563eb; padding:2px 8px; border-radius:20px; margin-left:8px;">2026</span></div>
+        <a href="#home">🏠 Главная</a>
+        <a href="#all-builds">🎯 9+ сборок</a>
+        <a href="#assembly-guide">🔧 Сборка ПК</a>
+        <a href="#os-guide">💿 Настройка ОС</a>
+    </div>
+</div>
+
+<div class="hero" id="home">
+    <div class="hero-glow"></div>
+    <div class="container">
+        <h1>Собери компьютер под свои задачи <span class="year-badge" style="background:#2563eb; color:white;">цены 2026</span></h1>
+        <p>9+ готовых сборок от 25 000 ₽ до 400 000 ₽ + пошаговые инструкции по сборке ПК и настройке Windows. Актуальные цены на 2026 год.</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- ================= РАЗДЕЛ: ВСЕ СБОРКИ (9+ вариантов) ================= -->
+    <div class="section-card" id="all-builds">
+        <h2 class="section-title">🎯 9+ сборок на любой бюджет и задачи <span class="year-badge">2026</span></h2>
+        <p style="margin-bottom: 20px; color:#b9c7e3;">Выберите подходящую конфигурацию: от офисного ПК до профессиональной станции для монтажа 4K и AI.</p>
+        
+        <!-- Баннер-ссылка на конфигуратор (убрана лишняя строка, оставлен только основной блок) -->
+        <div class="configurator-banner">
+            <p>🎯 <strong>Если не понравилась ни одна сборка из имеющихся</strong>, то перейдите по этой ссылке на конфигуратор:</p>
+            <a href="https://lesa7162.github.io/podbor/" target="_blank" rel="noopener noreferrer">✨ СОБРАТЬ СВОЙ КОМПЬЮТЕР ✨</a>
+            <div class="small-note">Полностью интерактивный конфигуратор с подбором под бюджет и цели использования</div>
+        </div>
+        
+        <div class="builds-grid">
+            <!-- 1. Ультрабюджет офис 2026 -->
+            <div class="build-card">
+                <h3>📘 Офисный старт <span class="price-tag">~25 000 ₽</span></h3>
+                <span class="badge-purpose">Документы, браузер, YouTube, 1С</span>
+                <ul class="spec-list">
+                    <li><strong>CPU:</strong> Intel Celeron G6900 / AMD Athlon 3000G</li>
+                    <li><strong>GPU:</strong> Встроенная графика</li>
+                    <li><strong>ОЗУ:</strong> 8GB DDR4 3200MHz</li>
+                    <li><strong>SSD:</strong> 256GB NVMe</li>
+                    <li><strong>PSU:</strong> 300W</li>
+                </ul>
+                <div class="highlight" style="margin-top: 8px; padding: 10px; font-size:0.85rem;">💡 Для учебы и работы — отличный вариант на несколько лет.</div>
+            </div>
+            <!-- 2. Бюджетный универсал -->
+            <div class="build-card">
+                <h3>🖥️ Универсал <span class="price-tag">~65 000 ₽</span></h3>
+                <span class="badge-purpose">Учеба, программирование, лёгкие игры, киберспорт</span>
+                <ul class="spec-list">
+                    <li><strong>CPU:</strong> Ryzen 5 5600G / Intel i3-12100</li>
+                    <li><strong>GPU:</strong> RTX 2060 SUPER (8GB)</li>
+                    <li><strong>ОЗУ:</strong> 16GB DDR4 3200MHz</li>
+                    <li><strong>SSD:</strong> 512GB NVMe</li>
+                    <li><strong>PSU:</strong> 550W Bronze</li>
+                </ul>
+            </div>
+            <!-- 3. Игровой 1080p entry -->
+            <div class="build-card">
+                <h3>🎮 Начальный игровой <span class="price-tag">~80 000 ₽</span></h3>
+                <span class="badge-purpose">Киберспорт, GTA V, Fortnite, Dota 2</span>
+                <ul class="spec-list">
+                    <li><strong>CPU:</strong> Intel Core i5-12400F / Ryzen 5 5500</li>
+                    <li><strong>GPU:</strong> RX 6600 / RTX 3060 12GB</li>
+                    <li><strong>ОЗУ:</strong> 16GB DDR4 3200MHz</li>
+                    <li><strong>SSD:</strong> 1TB NVMe</li>
+                    <li><strong>PSU:</strong> 550W Bronze</li>
+                </ul>
+            </div>
+            <!-- 4. Игровой 1440p mid -->
+            <div class="build-card">
+                <h3>⚡ Игровой PRO <span class="price-tag">~120 000 ₽</span></h3>
+                <span class="badge-purpose">1440p 100+ fps, стриминг</span>
+                <ul class="spec-list">
+                    <li><strong>CPU:</strong> Ryzen 5 7600 / i5-14600KF</li>
+                    <li><strong>GPU:</strong> RTX 4070 / RX 7800 XT</li>
+                    <li><strong>ОЗУ:</strong> 32GB DDR5 6000MHz</li>
+                    <li><strong>SSD:</strong> 1TB Gen4 NVMe</li>
+                    <li><strong>PSU:</strong> 750W Gold</li>
+                </ul>
+            </div>
+            <!-- 5. Игровой 4K ультра -->
+            <div class="build-card">
+                <h3>👑 4K Ultra <span class="price-tag">~240 000 ₽</span></h3>
+                <span class="badge-purpose">4K max settings, VR, Ray Tracing</span>
+                <ul class="spec-list">
+                    <li><strong>CPU:</strong> Ryzen 7 7800X3D / i9-14900K</li>
+                    <li><strong>GPU:</strong> RTX 4080 SUPER / RX 7900 XTX</li>
+                    <li><strong>ОЗУ:</strong> 32GB DDR5 6000</li>
+                    <li><strong>SSD:</strong> 2TB NVMe Gen4</li>
+                    <li><strong>PSU:</strong> 850W Gold+</li>
+                </ul>
+            </div>
+            <!-- 6. Видеомонтаж и 3D -->
+            <div class="build-card">
+                <h3>✂️ Рабочая станция <span class="price-tag">~170 000 ₽</span></h3>
+                <span class="badge-purpose">Premiere, DaVinci, Blender</span>
+                <ul class="spec-list">
+                    <li><strong>CPU:</strong> Intel i7-13700K / Ryzen 9 7900X</li>
+                    <li><strong>GPU:</strong> RTX 4070 Ti SUPER (16GB)</li>
+                    <li><strong>ОЗУ:</strong> 64GB DDR5</li>
+                    <li><strong>SSD:</strong> 2TB NVMe + 2TB HDD</li>
+                    <li><strong>PSU:</strong> 850W Gold</li>
+                </ul>
+            </div>
+            <!-- 7. Профессиональный монтаж 4K/8K -->
+            <div class="build-card">
+                <h3>🎬 Про-рендер <span class="price-tag">~330 000 ₽</span></h3>
+                <span class="badge-purpose">8K видео, 3D рендер, AI модели</span>
+                <ul class="spec-list">
+                    <li><strong>CPU:</strong> Ryzen 9 7950X / Intel i9-14900KS</li>
+                    <li><strong>GPU:</strong> RTX 4090 24GB</li>
+                    <li><strong>ОЗУ:</strong> 128GB DDR5</li>
+                    <li><strong>SSD:</strong> 4TB NVMe + 4TB HDD RAID</li>
+                    <li><strong>PSU:</strong> 1000W Platinum</li>
+                </ul>
+            </div>
+            <!-- 8. Компактный HTPC -->
+            <div class="build-card">
+                <h3>📺 Компактный HTPC <span class="price-tag">~45 000 ₽</span></h3>
+                <span class="badge-purpose">Медиасервер, 4K видео, домашний кинотеатр</span>
+                <ul class="spec-list">
+                    <li><strong>CPU:</strong> Intel N100 / Ryzen 5 5600GT</li>
+                    <li><strong>GPU:</strong> Встроенная Intel UHD / Radeon</li>
+                    <li><strong>ОЗУ:</strong> 16GB DDR4</li>
+                    <li><strong>SSD:</strong> 512GB + 2TB HDD</li>
+                    <li><strong>Корпус:</strong> Mini-ITX slim</li>
+                </ul>
+            </div>
+            <!-- 9. AI / LLM ферма -->
+            <div class="build-card">
+                <h3>🤖 AI / LLM <span class="price-tag">~400 000 ₽</span></h3>
+                <span class="badge-purpose">Локальные нейросети, обучение моделей</span>
+                <ul class="spec-list">
+                    <li><strong>CPU:</strong> Ryzen Threadripper / i9</li>
+                    <li><strong>GPU:</strong> 2x RTX 3090 / RTX 4090</li>
+                    <li><strong>ОЗУ:</strong> 128GB ECC</li>
+                    <li><strong>SSD:</strong> 2TB NVMe + 4TB</li>
+                    <li><strong>PSU:</strong> 1200W Platinum</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= ПОДРОБНЕЙШАЯ ИНСТРУКЦИЯ ПО СБОРКЕ ПК ================= -->
+    <div class="section-card" id="assembly-guide">
+        <h2 class="section-title">🔧 Полное руководство по сборке ПК (15 шагов)</h2>
+        <p>Следуйте этой инструкции, чтобы собрать компьютер с нуля без ошибок. Время сборки: 1.5-2.5 часа.</p>
+        
+        <div class="warning-box">
+            ⚠️ <strong>Важно!</strong> Перед началом: работайте на чистом столе, используйте крестовую отвертку, антистатический браслет (или касайтесь корпуса блока питания каждые 5 минут).
+        </div>
+
+        <div class="guide-grid">
+            <div class="guide-step-card">
+                <h4>📦 Шаг 1-3: Подготовка и CPU</h4>
+                <ul class="step-list">
+                    <li><span class="step-number">1.</span> Распакуйте материнскую плату, положите на картонную подложку.</li>
+                    <li><span class="step-number">2.</span> Установите процессор: совместите треугольник с меткой на сокете, опустите рычаг.</li>
+                    <li><span class="step-number">3.</span> Нанесите термопасту (размер с горошину) и закрепите кулер. Подключите вентилятор в разъем CPU_FAN.</li>
+                </ul>
+            </div>
+            <div class="guide-step-card">
+                <h4>🧠 Шаг 4-5: ОЗУ и M.2 SSD</h4>
+                <ul class="step-list">
+                    <li><span class="step-number">4.</span> Откройте защелки слотов ОЗУ. Вставьте планки в слоты A2 и B2 до щелчка.</li>
+                    <li><span class="step-number">5.</span> Установите NVMe SSD в слот M.2, закрепите винтом.</li>
+                </ul>
+            </div>
+            <div class="guide-step-card">
+                <h4>🖥️ Шаг 6-8: Установка в корпус</h4>
+                <ul class="step-list">
+                    <li><span class="step-number">6.</span> Вставьте заглушку ввода-вывода (I/O shield) в корпус.</li>
+                    <li><span class="step-number">7.</span> Установите материнскую плату на стойки, закрутите винты.</li>
+                    <li><span class="step-number">8.</span> Закрепите блок питания в отсеке, вентилятором вниз.</li>
+                </ul>
+            </div>
+            <div class="guide-step-card">
+                <h4>⚡ Шаг 9-11: Кабели и питание</h4>
+                <ul class="step-list">
+                    <li><span class="step-number">9.</span> Подключите 24-pin (материнская плата) и 8-pin (CPU) кабели питания.</li>
+                    <li><span class="step-number">10.</span> Подсоедините кабели передней панели: POWER SW, RESET SW, HDD LED.</li>
+                    <li><span class="step-number">11.</span> Проложите кабели через отверстия корпуса, закрепите стяжками.</li>
+                </ul>
+            </div>
+            <div class="guide-step-card">
+                <h4>🎮 Шаг 12-13: Видеокарта</h4>
+                <ul class="step-list">
+                    <li><span class="step-number">12.</span> Снимите заглушки, вставьте видеокарту в PCIe x16 слот до щелчка.</li>
+                    <li><span class="step-number">13.</span> Подключите питание видеокарты (6+2 pin PCIe).</li>
+                </ul>
+            </div>
+            <div class="guide-step-card">
+                <h4>🔌 Шаг 14-15: Финальные проверки</h4>
+                <ul class="step-list">
+                    <li><span class="step-number">14.</span> Подключите монитор к видеокарте, клавиатуру, мышь.</li>
+                    <li><span class="step-number">15.</span> Включите блок питания, нажмите кнопку Power. Зайдите в BIOS клавишей Del/F2.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="highlight">
+            ✅ <strong>Что делать, если ПК не включается?</strong> Проверьте: 1) Питание CPU и материнской платы, 2) Плотность установки ОЗУ, 3) Кнопку включения на корпусе.
+        </div>
+        <a href="https://vkvideo.ru/video-141036053_456239720" target="_blank" class="btn-ghost">📺 Полный гайд сборки (видео)</a>
+    </div>
+
+    <!-- ================= МАКСИМАЛЬНО ПОДРОБНАЯ НАСТРОЙКА ОС ================= -->
+    <div class="section-card" id="os-guide">
+        <h2 class="section-title">💿 Полная настройка Windows 10/11 (от установки до оптимизации)</h2>
+        <p>Пошаговое руководство, которое превратит новый ПК в мощную и стабильную систему.</p>
+
+        <div class="guide-grid">
+            <div class="guide-step-card">
+                <h4>🖥️ Этап 1: Создание загрузочной флешки</h4>
+                <ul class="step-list">
+                    <li>Скачайте <strong>Media Creation Tool</strong> с официального сайта Microsoft.</li>
+                    <li>Вставьте флешку (от 8GB, все данные будут удалены).</li>
+                    <li>Запустите утилиту → выберите "Создать установочный носитель" → USB flash drive.</li>
+                </ul>
+            </div>
+            <div class="guide-step-card">
+                <h4>⚙️ Этап 2: Установка Windows</h4>
+                <ul class="step-list">
+                    <li>Вставьте флешку, перезагрузите ПК. Нажмите F12/Del для выбора загрузки с USB.</li>
+                    <li>Выберите язык, нажмите "Установить".</li>
+                    <li>При выборе типа: "Выборочная: только установка Windows".</li>
+                    <li>Удалите старые разделы, создайте новый, установите Windows.</li>
+                </ul>
+            </div>
+            <div class="guide-step-card">
+                <h4>🔧 Этап 3: Драйверы</h4>
+                <ul class="step-list">
+                    <li>Скачайте драйвер видеокарты с сайта NVIDIA/AMD.</li>
+                    <li>Установите драйверы чипсета, LAN, аудио с сайта производителя материнской платы.</li>
+                    <li>Обновите Windows через Центр обновлений.</li>
+                </ul>
+            </div>
+            <div class="guide-step-card">
+                <h4>🚀 Этап 4: Оптимизация</h4>
+                <ul class="step-list">
+                    <li>Отключите автозагрузку мусора (Ctrl+Shift+Esc → Автозагрузка).</li>
+                    <li>Настройки электропитания: "Высокая производительность".</li>
+                    <li>Включите режим игры в параметрах Windows.</li>
+                </ul>
+            </div>
+            <div class="guide-step-card">
+                <h4>🎮 Этап 5: Игры и монтаж</h4>
+                <ul class="step-list">
+                    <li>Установите <strong>MSI Afterburner</strong> + RivaTuner для мониторинга.</li>
+                    <li>Настройте файл подкачки (1.5x от ОЗУ на SSD).</li>
+                    <li>Включите аппаратное ускорение GPU в настройках Windows.</li>
+                </ul>
+            </div>
+            <div class="guide-step-card">
+                <h4>🛡️ Этап 6: Безопасность</h4>
+                <ul class="step-list">
+                    <li>Включите Defender (стандартный антивирус).</li>
+                    <li>Настройте восстановление: образ системы на внешний диск.</li>
+                    <li>Отключите телеметрию через <strong>O&O ShutUp10++</strong>.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            🔥 <strong>Совет профи для BIOS:</strong> После сборки зайдите в BIOS и включите профиль XMP/EXPO для оперативной памяти, а также Re-Size BAR.
+        </div>
+        <div class="highlight">
+            📌 <strong>Чек-лист после настройки ОС:</strong> Установлены все драйверы ✅ | Активирован XMP ✅ | Отключена телеметрия ✅ | Создана точка восстановления ✅
+        </div>
+    </div>
+    
+    <!-- Бонус: уход за ПК -->
+    <div class="section-card">
+        <h2 class="section-title">🧼 Уход за ПК: чистка и профилактика</h2>
+        <div class="guide-grid">
+            <div class="guide-step-card">
+                <h4>🧹 Чистка от пыли</h4>
+                <p>Раз в 3-6 месяцев продувайте корпус баллончиком со сжатым воздухом. Особое внимание радиаторам и блоку питания.</p>
+            </div>
+            <div class="guide-step-card">
+                <h4>🌡️ Контроль температур</h4>
+                <p>Установите HWMonitor. Норма: CPU до 85°C, GPU до 80-85°C. Если выше — замените термопасту.</p>
+            </div>
+            <div class="guide-step-card">
+                <h4>💾 Замена термопасты</h4>
+                <p>Меняйте термопасту на процессоре раз в 2-3 года. Для видеокарты — раз в 3-4 года. Используйте Arctic MX-6.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>⚡ Полный гид "Как подобрать, собрать и настроить ПК" — более 9 сборок, детальная сборка и настройка Windows. <strong>Цены актуальны на 2026 год</strong>.<br>
+    📌 Быстрые ссылки: <a href="#all-builds" style="color:#3b82f6;">#все_сборки</a> · <a href="#assembly-guide" style="color:#3b82f6;">#сборка_пк</a> · <a href="#os-guide" style="color:#3b82f6;">#настройка_ос</a><br>
+    © 2026 PC Master Guide — создай компьютер своей мечты своими руками.</p>
+</footer>
+
+<script>
+    document.querySelectorAll('.nav-container a, .btn-ghost[href^="#"], footer a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else if (targetId === 'home') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
